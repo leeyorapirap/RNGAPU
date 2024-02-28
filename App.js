@@ -20,7 +20,7 @@ import Filters from './components/Filters';
 import { getSectionListData, useUpdateEffect } from './utils';
 
 const API_URL =
-  './data.json';
+  'https://api.github.com/repos/leeyorapirap/RNGAPU/contents/data.json';
 const sections = ['Appetizers', 'Salads', 'Beverages'];
 
 
