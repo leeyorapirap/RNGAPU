@@ -20,7 +20,7 @@ import Filters from './components/Filters';
 import { getSectionListData, useUpdateEffect } from './utils';
 
 const API_URL =
-  'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu-items-by-category.json';
+  './data.json';
 const sections = ['Appetizers', 'Salads', 'Beverages'];
 
 
@@ -71,15 +71,31 @@ export default function App() {
     })();
   }, []);
 
+  // useUpdateEffect(() => {
+  //   (async () => {
+  //     const activeCategories = sections.filter((s, i) => {
+  //       // If all filters are deselected, all categories are active
+  //       if (filterSelections.every((item) => item === false)) {
+  //         return true;
+  //       }
+  //       return filterSelections[i];
+  //     });
+  //     try {
+  //       const menuItems = await filterByQueryAndCategories(
+  //         query,
+  //         activeCategories
+  //       );
+  //       const sectionListData = getSectionListData(menuItems);
+  //       setData(sectionListData);
+  //     } catch (e) {
+  //       Alert.alert(e.message);
+  //     }
+  //   })();
+  // }, [filterSelections, query]);
   useUpdateEffect(() => {
     (async () => {
-      const activeCategories = sections.filter((s, i) => {
-        // If all filters are deselected, all categories are active
-        if (filterSelections.every((item) => item === false)) {
-          return true;
-        }
-        return filterSelections[i];
-      });
+      const activeCategories = sections.filter((s, i) => filterSelections[i]);
+      console.log('Active categories:', activeCategories);
       try {
         const menuItems = await filterByQueryAndCategories(
           query,
@@ -104,10 +120,16 @@ export default function App() {
     debouncedLookup(text);
   };
 
+  // const handleFiltersChange = async (index) => {
+  //   const arrayCopy = [...filterSelections];
+  //   arrayCopy[index] = !filterSelections[index];
+  //   setFilterSelections(arrayCopy);
+  // };
   const handleFiltersChange = async (index) => {
     const arrayCopy = [...filterSelections];
     arrayCopy[index] = !filterSelections[index];
     setFilterSelections(arrayCopy);
+    console.log('Updated filterSelections:', arrayCopy);
   };
 
   return (
@@ -172,16 +194,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: 12,
   },
   header: {
-    fontSize: 24,
+    fontSize: 20,
     paddingVertical: 8,
     color: '#FBDABB',
     backgroundColor: '#495E57',
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'white',
   },
 });
